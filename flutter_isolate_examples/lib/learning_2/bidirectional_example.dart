@@ -68,10 +68,10 @@ class _BidirectionalExampleState extends State<BidirectionalExample> {
     final receivePort = ReceivePort();
     isolate = await Isolate.spawn(_entryPoint, receivePort.sendPort);
 
-    final rp = receivePort.asBroadcastStream();
-    send2Isolate = await rp.first;
+    final broadcastRp = receivePort.asBroadcastStream();
+    send2Isolate = await broadcastRp.first;
 
-    initSubscriptions(rp);
+    initSubscriptions(broadcastRp);
   }
 
   void initSubscriptions(Stream<dynamic> receivePort) {
