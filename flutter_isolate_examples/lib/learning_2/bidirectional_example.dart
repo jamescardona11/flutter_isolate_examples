@@ -19,7 +19,6 @@ class _BidirectionalExampleState extends State<BidirectionalExample> {
 
   StreamSubscription? subscription;
 
-  final completer = Completer<void>();
   SendPort? send2Isolate;
   Isolate? isolate;
 
@@ -39,8 +38,6 @@ class _BidirectionalExampleState extends State<BidirectionalExample> {
               onPressed: () async {
                 lastRandomNumber = generateRandomNumber();
                 setState(() {});
-
-                await completer.future;
 
                 send2Isolate?.send(lastRandomNumber);
               },
@@ -70,24 +67,21 @@ class _BidirectionalExampleState extends State<BidirectionalExample> {
   void createIsolate() async {
     final receivePort = ReceivePort();
     isolate = await Isolate.spawn(_entryPoint, receivePort.sendPort);
-    initSubscriptions(receivePort);
+
+    final rp = receivePort.asBroadcastStream();
+    send2Isolate = await rp.first;
+
+    initSubscriptions(rp);
   }
 
-  void initSubscriptions(ReceivePort receivePort) {
+  void initSubscriptions(Stream<dynamic> receivePort) {
     subscription = receivePort //
+        .takeWhile((element) => element is String)
+        .cast<String>()
         .listen((message) {
-      if (message is SendPort) {
-        initSendPort(message);
-        completer.complete();
-      } else if (message is String) {
-        encodedData.add(message);
-        setState(() {});
-      }
+      encodedData.add(message);
+      setState(() {});
     });
-  }
-
-  void initSendPort(SendPort sendPort) {
-    send2Isolate = sendPort;
   }
 
   @override
@@ -102,8 +96,10 @@ void _entryPoint(SendPort sendPort) async {
   final rp = ReceivePort();
   sendPort.send(rp.sendPort);
 
-  rp.listen((number) {
-    final r = generateRandomString(number);
+  final messages = rp.takeWhile((element) => element is int).cast<int>();
+
+  await for (final message in messages) {
+    final r = generateRandomString(message);
     sendPort.send(r);
-  });
+  }
 }
