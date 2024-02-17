@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_isolate_examples/demo/demo_image_processing_page.dart';
 import 'package:flutter_isolate_examples/learning_1/learning_1.dart';
 
+import 'learning_2/spawn_example.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
@@ -38,15 +40,16 @@ class HomePage extends StatelessWidget {
             children: [
               TextButton(
                 onPressed: () => _navigateToExample1(context, const Learning1()),
-                child: const Text('Step 1 - W-W-H'),
+                child: const Text('W-W-H'),
               ),
+              Divider(),
               const SizedBox(height: 20),
               TextButton(
-                onPressed: () {},
-                child: const Text('Example 2'),
+                onPressed: () => _navigateToExample1(context, const SpawnExample()),
+                child: const Text('Spawn'),
               ),
-              const SizedBox(height: 20),
               Divider(),
+              const SizedBox(height: 20),
               TextButton(
                 onPressed: () => _navigateToExample1(context, const DemoImageProcessingPage()),
                 child: const Text('Demo Compress'),
