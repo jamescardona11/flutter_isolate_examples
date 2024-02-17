@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_isolate_examples/learning_1/example_1.dart';
+import 'package:flutter_isolate_examples/learning_1/learning_1.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                onPressed: () => _navigateToExample1(context, const Example1()),
+                onPressed: () => _navigateToExample1(context, const Learning1()),
                 child: const Text('Example 1'),
               ),
               const SizedBox(height: 20),
