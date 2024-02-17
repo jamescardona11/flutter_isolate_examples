@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_isolate_examples/demo/utils/file_info.dart';
 import 'package:image_picker/image_picker.dart';
@@ -44,13 +44,15 @@ class _DemoImageProcessingPageState extends State<DemoImageProcessingPage> {
                 var rootToken = RootIsolateToken.instance!;
 
                 // get the file location
-                newPath = await compute(
-                    ImageProcessingIsolate.compressImage,
+                newPath = await Isolate.run(
+                  () => ImageProcessingIsolate.compressImage(
                     FileInfo(
                       maxSize: 1 * 1024 * 1024,
                       fileLocation: originalPath!,
-                      token: rootToken,
-                    )); // <<1MB
+                    ),
+                    token: rootToken,
+                  ),
+                ); // <<1MB
 
                 setState(() {});
               },
