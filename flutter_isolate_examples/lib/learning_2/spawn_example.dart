@@ -16,7 +16,6 @@ class SpawnExample extends StatefulWidget {
 
 class _SpawnExampleState extends State<SpawnExample> {
   List<String> encodedData = [];
-  int? lastRandomNumber;
 
   StreamSubscription? subscription;
   Isolate? isolate;
@@ -31,8 +30,8 @@ class _SpawnExampleState extends State<SpawnExample> {
             onPressed: () async {
               encodedData.clear();
               setState(() {});
-              subscription?.cancel();
 
+              subscription?.cancel();
               isolate?.kill();
 
               final receivePort = ReceivePort();
@@ -62,8 +61,8 @@ class _SpawnExampleState extends State<SpawnExample> {
     subscription = receivePort //
         .takeWhile((element) => element is String)
         .take(10)
-        .listen((event) {
-      encodedData.add(event);
+        .listen((message) {
+      encodedData.add(message);
       setState(() {});
     });
   }
