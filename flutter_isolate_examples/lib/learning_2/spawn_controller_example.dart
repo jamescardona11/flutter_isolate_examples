@@ -65,7 +65,7 @@ class _SpawnControllerExampleState extends State<SpawnControllerExample> {
 
   void createIsolate() async {
     isolateController = await IsolateController.create();
-    subscription = isolateController?._broadcastRp.listen((message) {
+    subscription = isolateController?.broadcastRp.listen((message) {
       encodedData.add(message);
       setState(() {});
     });
@@ -95,27 +95,35 @@ class IsolateController<T> {
         _broadcastRp = broadcastRp,
         _sendPort = sendPort;
 
-  static Future<IsolateController<T>> create<T>() async {
+  static Future<IsolateController<T>?> create<T>() async {
     final receivePort = ReceivePort();
 
-    final isolate = await Isolate.spawn(
-      _entryPoint,
-      receivePort.sendPort,
-      errorsAreFatal: true,
-      onExit: receivePort.sendPort,
-      onError: receivePort.sendPort,
-    );
+    try {
+      final isolate = await Isolate.spawn(
+        _entryPoint,
+        receivePort.sendPort,
+        errorsAreFatal: true,
+        onExit: receivePort.sendPort,
+        onError: receivePort.sendPort,
+      );
 
-    final broadcastRp = receivePort.asBroadcastStream();
-    final send2Isolate = await broadcastRp.first;
+      final broadcastRp = receivePort.asBroadcastStream();
+      final send2Isolate = await broadcastRp.first;
 
-    return IsolateController._(
-      isolate: isolate,
-      receivePort: receivePort,
-      broadcastRp: broadcastRp,
-      sendPort: send2Isolate,
-    );
+      return IsolateController._(
+        isolate: isolate,
+        receivePort: receivePort,
+        broadcastRp: broadcastRp,
+        sendPort: send2Isolate,
+      );
+    } catch (e) {
+      receivePort.close();
+      print(e);
+      return null;
+    }
   }
+
+  Stream<dynamic> get broadcastRp => _broadcastRp;
 
   void send(T message) {
     _sendPort.send(message);
@@ -126,7 +134,7 @@ class IsolateController<T> {
     _receivePort.close();
   }
 
-  Stream<String> watchMessages(String forGreeting) {
+  Stream<String> watchMessages() {
     return _broadcastRp //
         .takeWhile((element) => element is String)
         .cast<String>();

@@ -4,19 +4,6 @@ import 'dart:isolate';
 import 'package:flutter/foundation.dart';
 
 class IsolatesService {
-  void doSomething(var bigNumber) {
-    final timer = Stopwatch()..start();
-    print('Doing something');
-
-    var sum = 0;
-    for (var i = 0; i <= bigNumber; i++) {
-      sum += i;
-    }
-    print('finished ${sum}');
-    print('InitializeAppData Completed in ${timer.elapsedMilliseconds} ms');
-    timer.stop();
-  }
-
   void computeIsolate() {
     print('Compute');
     compute(doSomething, 1000000000);
@@ -43,6 +30,19 @@ class IsolatesService {
     final send2Isolate = await completer.future;
     send2Isolate.send(1000000000);
   }
+}
+
+void doSomething(var bigNumber) {
+  final timer = Stopwatch()..start();
+  print('Doing something');
+
+  var sum = 0;
+  for (var i = 0; i <= bigNumber; i++) {
+    sum += i;
+  }
+  print('finished ${sum}');
+  print('InitializeAppData Completed in ${timer.elapsedMilliseconds} ms');
+  timer.stop();
 }
 
 void _doSomethingForSpawn(SendPort sendPort) {

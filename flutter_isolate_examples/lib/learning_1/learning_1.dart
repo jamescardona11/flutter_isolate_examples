@@ -24,7 +24,7 @@ class _Learning1State extends State<Learning1> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton(
-              onPressed: () => _isolatesService.doSomething(bigNumber),
+              onPressed: () => doSomething(bigNumber),
               child: const Text('Do something'),
             ),
             TextButton(
