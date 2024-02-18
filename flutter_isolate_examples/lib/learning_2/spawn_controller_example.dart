@@ -116,9 +116,8 @@ class IsolateController<T> {
         broadcastRp: broadcastRp,
         sendPort: send2Isolate,
       );
-    } catch (e) {
+    } on Object {
       receivePort.close();
-      print(e);
       return null;
     }
   }

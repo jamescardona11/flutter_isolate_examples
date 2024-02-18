@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_isolate_examples/demo/demo_image_processing_page.dart';
 import 'package:flutter_isolate_examples/learning_1/learning_1.dart';
 import 'package:flutter_isolate_examples/learning_2/spawn_controller_example.dart';
+import 'package:flutter_isolate_examples/learning_2/spawn_controller_example_2.dart';
 
 import 'learning_2/bidirectional_example.dart';
 import 'learning_2/spawn_example.dart';
@@ -59,6 +60,11 @@ class HomePage extends StatelessWidget {
               TextButton(
                 onPressed: () => _navigateToExample1(context, const SpawnControllerExample()),
                 child: const Text('Spawn Controller'),
+              ),
+              const SizedBox(height: 20),
+              TextButton(
+                onPressed: () => _navigateToExample1(context, const SpawnControllerExample2()),
+                child: const Text('Spawn Controller 2'),
               ),
               Divider(),
               const SizedBox(height: 20),
