@@ -103,8 +103,6 @@ class IsolateController<T> {
         _entryPoint,
         receivePort.sendPort,
         errorsAreFatal: true,
-        onExit: receivePort.sendPort,
-        onError: receivePort.sendPort,
       );
 
       final broadcastRp = receivePort.asBroadcastStream();

@@ -92,8 +92,8 @@ class _SpawnControllerExample2State extends State<SpawnControllerExample2> {
 }
 
 class IsolateController<I, O> {
-  final ReceivePort _receivePort;
-  final SendPort _sendPort;
+  final SendPort _commands;
+  final ReceivePort _responses;
 
   final StreamController<O> _controller = StreamController<O>.broadcast();
   late final StreamSubscription<O> _subscription;
@@ -102,8 +102,8 @@ class IsolateController<I, O> {
     required ReceivePort receivePort,
     required SendPort sendPort,
     required Stream<dynamic> output,
-  })  : _receivePort = receivePort,
-        _sendPort = sendPort {
+  })  : _responses = receivePort,
+        _commands = sendPort {
     _subscription = output //
         .takeWhile((element) => element is O)
         .cast<O>()
@@ -113,27 +113,24 @@ class IsolateController<I, O> {
   }
 
   static Future<IsolateController<I, O>?> create<I, O>() async {
-    final receivePort = ReceivePort();
+    final initPort = ReceivePort();
 
     try {
-      Isolate.spawn(
+      await Isolate.spawn(
         _entryPoint,
-        receivePort.sendPort,
-        errorsAreFatal: true,
-        onExit: receivePort.sendPort,
-        onError: receivePort.sendPort,
+        initPort.sendPort,
       );
 
-      final broadcastRp = receivePort.asBroadcastStream();
-      final send2Isolate = await broadcastRp.first;
+      final broadcastRp = initPort.asBroadcastStream();
+      final sendPort = await broadcastRp.first;
 
       return IsolateController._(
-        receivePort: receivePort,
+        receivePort: initPort,
         output: broadcastRp,
-        sendPort: send2Isolate,
+        sendPort: sendPort,
       );
     } catch (e) {
-      receivePort.close();
+      initPort.close();
       print(e);
       return null;
     }
@@ -142,20 +139,13 @@ class IsolateController<I, O> {
   Stream<O> get broadcastRp => _controller.stream;
 
   void send(I message) {
-    _sendPort.send(message);
-
-    if (message is IsolateMessageClose) {
-      _close();
-    }
+    _commands.send(message);
   }
 
   void dispose() {
-    _sendPort.send(IsolateMessageClose());
-  }
-
-  void _close() {
+    _commands.send(IsolateMessageClose());
     _subscription.cancel();
-    _receivePort.close();
+    _responses.close();
   }
 }
 
@@ -182,7 +172,7 @@ void _entryPoint(SendPort sendPort) async {
         sendPort.send(r);
         break;
       case IsolateMessageClose _:
-        Isolate.exit();
+        Isolate.exit(sendPort, 'closed');
     }
   }
 }
