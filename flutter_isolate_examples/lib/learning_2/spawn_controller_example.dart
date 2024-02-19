@@ -130,12 +130,6 @@ class IsolateController<T> {
     _isolate.kill();
     _receivePort.close();
   }
-
-  Stream<String> watchMessages() {
-    return _broadcastRp //
-        .takeWhile((element) => element is String)
-        .cast<String>();
-  }
 }
 
 void _entryPoint(SendPort sendPort) async {
