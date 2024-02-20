@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_isolate_examples/demo/demo_image_processing_page.dart';
+import 'package:flutter_isolate_examples/demo/demo_json_page.dart';
 import 'package:flutter_isolate_examples/learning_1/learning_1.dart';
 import 'package:flutter_isolate_examples/learning_2/spawn_controller_example.dart';
 import 'package:flutter_isolate_examples/learning_2/spawn_controller_example_2.dart';
 
+import 'demo/demo_image_upload_page.dart';
 import 'learning_2/bidirectional_example.dart';
 import 'learning_2/spawn_example.dart';
 
@@ -74,12 +76,12 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextButton(
-                onPressed: () {},
+                onPressed: () => _navigateToExample1(context, const DemoImageUploadPage()),
                 child: const Text('Demo Upload'),
               ),
               const SizedBox(height: 20),
               TextButton(
-                onPressed: () {},
+                onPressed: () => _navigateToExample1(context, const DemoJsonPage()),
                 child: const Text('Demo JSON'),
               ),
             ],
