@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_isolate_examples/demo/utils/attachment_info.dart';
+import 'package:flutter_isolate_examples/demo/models/attachment_info.dart';
 
 class ImagePreview extends StatefulWidget {
   const ImagePreview({

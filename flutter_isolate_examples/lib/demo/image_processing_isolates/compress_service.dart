@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_isolate_examples/demo/utils/file_info.dart';
+import 'package:flutter_isolate_examples/demo/models/file_info.dart';
 import 'package:image/image.dart';
 
 class CompressImageService {

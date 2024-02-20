@@ -3,7 +3,7 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_isolate_examples/demo/utils/file_info.dart';
+import 'package:flutter_isolate_examples/demo/models/file_info.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'image_processing_isolates/image_processing_isolates.dart';

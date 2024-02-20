@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_isolate_examples/demo/utils/file_info.dart';
+import 'package:flutter_isolate_examples/demo/models/file_info.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'compress_service.dart';
