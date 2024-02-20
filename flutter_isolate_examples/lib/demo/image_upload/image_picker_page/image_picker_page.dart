@@ -23,6 +23,9 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Image Picker'),
+      ),
       body: SafeArea(
         child: AnimatedBuilder(
           animation: widget.provider,

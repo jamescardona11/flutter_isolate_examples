@@ -31,6 +31,9 @@ class _BidirectionalExampleState extends State<BidirectionalExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Bidirectional Example'),
+      ),
       body: SafeArea(
         child: Column(
           children: [

@@ -25,6 +25,9 @@ class _DemoImageProcessingPageState extends State<DemoImageProcessingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Demo Image Processing Page'),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

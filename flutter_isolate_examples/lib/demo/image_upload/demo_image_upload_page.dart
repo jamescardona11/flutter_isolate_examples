@@ -24,6 +24,9 @@ class _DemoImageUploadPageState extends State<DemoImageUploadPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Demo Image Upload Page'),
+      ),
       body: SafeArea(
         child: AnimatedBuilder(
           animation: _provider,

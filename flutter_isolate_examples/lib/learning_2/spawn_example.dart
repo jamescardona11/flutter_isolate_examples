@@ -23,6 +23,9 @@ class _SpawnExampleState extends State<SpawnExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Spawn Example'),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

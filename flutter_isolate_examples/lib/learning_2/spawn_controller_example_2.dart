@@ -30,6 +30,9 @@ class _SpawnControllerExample2State extends State<SpawnControllerExample2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Spawn Controller Example 2'),
+      ),
       body: SafeArea(
         child: Column(
           children: [
