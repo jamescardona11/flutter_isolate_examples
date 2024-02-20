@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_isolate_examples/demo/demo_image_processing_page.dart';
 import 'package:flutter_isolate_examples/demo/demo_json_page.dart';
+import 'package:flutter_isolate_examples/demo/image_processing/demo_image_processing_page.dart';
 import 'package:flutter_isolate_examples/learning_1/learning_1.dart';
 import 'package:flutter_isolate_examples/learning_2/spawn_controller_example.dart';
 import 'package:flutter_isolate_examples/learning_2/spawn_controller_example_2.dart';
 
-import 'demo/demo_image_upload_page.dart';
+import 'demo/image_upload/demo_image_upload_page.dart';
 import 'learning_2/bidirectional_example.dart';
 import 'learning_2/spawn_example.dart';
 

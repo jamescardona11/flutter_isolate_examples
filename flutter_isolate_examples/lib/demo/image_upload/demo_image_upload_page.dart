@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_isolate_examples/demo/models/attachment_info.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'image_upload_isolates/isolate_controller.dart';
-import 'widgets/image_preview.dart';
+import 'image_picker_page/image_preview.dart';
+import 'isolate/isolate_controller.dart';
 
 class DemoImageUploadPage extends StatefulWidget {
   const DemoImageUploadPage({
