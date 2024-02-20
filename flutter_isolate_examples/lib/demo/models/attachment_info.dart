@@ -29,8 +29,4 @@ class AttachmentInfo {
   }
 }
 
-enum AttachmentInfoState {
-  queued,
-  uploading,
-  completed,
-}
+enum AttachmentInfoState { queued, uploading, completed, failed }

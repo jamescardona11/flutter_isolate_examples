@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_isolate_examples/demo/utils/attachment_info.dart';
+import 'package:flutter_isolate_examples/demo/models/attachment_info.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'image_upload_isolates/isolate_controller.dart';
 import 'widgets/image_preview.dart';
 
 class DemoImageUploadPage extends StatefulWidget {
@@ -16,6 +19,15 @@ class DemoImageUploadPage extends StatefulWidget {
 class _DemoImageUploadPageState extends State<DemoImageUploadPage> {
   final ImagePicker _picker = ImagePicker();
   final List<AttachmentInfo> _attachments = [];
+
+  StreamSubscription? subscription;
+  IsolateControllerForUpload<IsolateMessage, AttachmentInfo>? isolateController;
+
+  @override
+  void initState() {
+    super.initState();
+    createIsolate();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,5 +81,19 @@ class _DemoImageUploadPageState extends State<DemoImageUploadPage> {
         ),
       ),
     );
+  }
+
+  void createIsolate() async {
+    isolateController = await IsolateControllerForUpload.create();
+    subscription = isolateController?.broadcastRp.listen((message) {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    subscription?.cancel();
+    isolateController?.dispose();
+    super.dispose();
   }
 }
