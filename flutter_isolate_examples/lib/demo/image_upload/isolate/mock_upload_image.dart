@@ -14,6 +14,8 @@ class MockUploadImage {
 
   Future<void> uploadImage(String base64) async {
     final duration = _randomDuration();
+    print('Uploading image... ');
     await Future.delayed(duration);
+    print('Image uploaded');
   }
 }
