@@ -11,15 +11,15 @@ class IsolatesService {
 
   void spawn() async {
     print('Spawn');
-    final rcvPort = ReceivePort();
+    final rcvPort = ReceivePort(); // --> Step 1
 
+    // --> Step 2
     final isolate = await Isolate.spawn(_doSomethingForSpawn, rcvPort.sendPort);
 
     final completer = Completer<SendPort>();
     rcvPort.listen((message) {
+      // --> Step 5
       if (message is SendPort) completer.complete(message);
-
-      print(message);
 
       if (message is! SendPort) {
         rcvPort.close();
@@ -46,7 +46,10 @@ void doSomething(var bigNumber) {
 }
 
 void _doSomethingForSpawn(SendPort sendPort) {
+  // --> Step 3
   final rcvPort = ReceivePort();
+
+  // --> Step 4
   sendPort.send(rcvPort.sendPort);
 
   rcvPort.listen((bigNumber) {
