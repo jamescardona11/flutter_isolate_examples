@@ -9,10 +9,8 @@ import 'move_files.dart';
 
 abstract class ImageProcessingIsolate {
   /// error handing is not implemented
-  static Future<String?> compressImage(FileInfo info, {RootIsolateToken? token}) async {
-    if (token != null) {
-      BackgroundIsolateBinaryMessenger.ensureInitialized(token);
-    }
+  static Future<String?> compressImage(FileInfo info) async {
+    BackgroundIsolateBinaryMessenger.ensureInitialized(info.token!);
 
     final helper = CompressImageService(info);
 

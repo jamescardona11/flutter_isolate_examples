@@ -1,10 +1,11 @@
 import 'dart:io';
-import 'dart:isolate';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_isolate_examples/demo/models/file_info.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'isolate/image_processing_isolates.dart';
 
@@ -47,12 +48,11 @@ class _DemoImageProcessingPageState extends State<DemoImageProcessingPage> {
                 var rootToken = RootIsolateToken.instance!;
 
                 // get the file location
-                newPath = await Isolate.run(
-                  () => ImageProcessingIsolate.compressImage(
-                    FileInfo(
-                      maxSize: 1 * 1024 * 1024,
-                      fileLocation: originalPath!,
-                    ),
+                newPath = await compute(
+                  ImageProcessingIsolate.compressImage,
+                  FileInfo(
+                    maxSize: 1 * 1024 * 1024,
+                    fileLocation: originalPath!,
                     token: rootToken,
                   ),
                 ); // <<1MB
@@ -67,4 +67,19 @@ class _DemoImageProcessingPageState extends State<DemoImageProcessingPage> {
       ),
     );
   }
+}
+
+Future<String> _getInternalFolder() async {
+  final directory = await getApplicationDocumentsDirectory();
+
+  if (!directory.existsSync()) {
+    await directory.create();
+  }
+
+  final downloadDirectory = Directory('${directory.absolute.path}/images_folder');
+  if (!downloadDirectory.existsSync()) {
+    await downloadDirectory.create();
+  }
+
+  return downloadDirectory.absolute.path;
 }

@@ -1,12 +1,16 @@
+import 'dart:ui';
+
 class FileInfo {
   final int maxSize;
   final ImageResolution? maxResolution;
   final String fileLocation;
+  final RootIsolateToken? token;
 
   FileInfo({
     required this.maxSize,
     required this.fileLocation,
     this.maxResolution,
+    this.token,
   });
 }
 
