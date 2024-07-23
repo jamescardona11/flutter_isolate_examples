@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:isolate';
 
+import 'package:flutter/services.dart';
+
 import 'entry_point.dart';
 import 'isolate_in_messages.dart';
 
 /// Same controller as SpawnControllerExample2 but using Completer and different Entry point
 class IsolateControllerForUpload<I, O> {
+  final Isolate _isolate;
   final SendPort _commands;
   final ReceivePort _responses;
 
@@ -13,6 +16,7 @@ class IsolateControllerForUpload<I, O> {
   late final StreamSubscription<O> _subscription;
 
   IsolateControllerForUpload._(
+    this._isolate,
     this._responses,
     this._commands,
   ) {
@@ -25,6 +29,8 @@ class IsolateControllerForUpload<I, O> {
   }
 
   static Future<IsolateControllerForUpload<I, O>?> create<I, O>() async {
+    var rootToken = RootIsolateToken.instance!;
+
     final initPort = RawReceivePort();
     final connection = Completer<SendPort>.sync();
     initPort.handler = (initialMessage) {
@@ -32,15 +38,15 @@ class IsolateControllerForUpload<I, O> {
     };
 
     try {
-      await Isolate.spawn(
+      final isolate = await Isolate.spawn<(SendPort, RootIsolateToken)>(
         EntryPointForUpload.entryPoint,
-        initPort.sendPort,
+        (initPort.sendPort, rootToken),
         errorsAreFatal: true,
       );
 
       final SendPort sendPort = await connection.future;
 
-      return IsolateControllerForUpload._(ReceivePort.fromRawReceivePort(initPort), sendPort);
+      return IsolateControllerForUpload._(isolate, ReceivePort.fromRawReceivePort(initPort), sendPort);
     } catch (e) {
       initPort.close();
       print(e);
@@ -54,9 +60,28 @@ class IsolateControllerForUpload<I, O> {
     _commands.send(message);
   }
 
+  void pause() {
+    // _isolate.pause(pauseCapability);
+    _commands.send(IsolateMessagePause(pauseCapability));
+  }
+
+  void resume() {
+    _isolate.resume(pauseCapability);
+    // _commands.send(IsolateMessageResume(pauseCapability));
+    // _isolate.kill();
+  }
+
+  /// Capability granting the ability to pause the isolate (not implemented)
+  Capability pauseCapability = Capability();
+
   void dispose() {
     _commands.send(IsolateMessageClose());
+    _isolate.kill();
     _subscription.cancel();
     _responses.close();
   }
 }
+
+// Pause and resume, should be have the same capability
+// you can pause inside the isolate and resume outside
+// you can pause outside the isolate and resume outside

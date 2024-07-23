@@ -40,6 +40,18 @@ class _ImagePickerPageState extends State<ImagePickerPage> {
                   },
                   child: const Text('Pick Image'),
                 ),
+                TextButton(
+                  onPressed: () async {
+                    widget.provider.pause();
+                  },
+                  child: const Text('Pause'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    widget.provider.resume();
+                  },
+                  child: const Text('Resume'),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Row(

@@ -45,6 +45,18 @@ class _SpawnControllerExampleState extends State<SpawnControllerExample> {
               },
               child: const Text('Random number'),
             ),
+            TextButton(
+              onPressed: () {
+                isolateController?.pause();
+              },
+              child: const Text('Pause'),
+            ),
+            TextButton(
+              onPressed: () {
+                isolateController?.resume();
+              },
+              child: const Text('Resume'),
+            ),
             const SizedBox(height: 20),
             if (lastRandomNumber != null) Text('Last random number: $lastRandomNumber'),
             const SizedBox(height: 20),
@@ -127,6 +139,16 @@ class IsolateController<T> {
 
   void send(T message) {
     _sendPort.send(message);
+  }
+
+  Capability pauseCapability = Capability();
+
+  void pause() {
+    _isolate.pause(pauseCapability);
+  }
+
+  void resume() {
+    _isolate.resume(pauseCapability);
   }
 
   void close() {

@@ -27,6 +27,14 @@ class UploadImageProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void pause() {
+    _isolateController?.pause();
+  }
+
+  void resume() {
+    _isolateController?.resume();
+  }
+
   List<AttachmentInfo> get attachments => _attachments.values.toList();
 
   int get completedCount => _attachments.values.where((element) => element.state == AttachmentInfoState.completed).length;
