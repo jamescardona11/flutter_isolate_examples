@@ -83,3 +83,15 @@ Future<String> _getInternalFolder() async {
 
   return downloadDirectory.absolute.path;
 }
+
+abstract class ImageProcessingIsolates {
+  final int id;
+  final double maxSize;
+
+  ImageProcessingIsolates(this.id, this.maxSize);
+
+  // Create function to calculate the max size of the image
+  static double calculateMaxSize(int id, double maxSize) {
+    return maxSize;
+  }
+}

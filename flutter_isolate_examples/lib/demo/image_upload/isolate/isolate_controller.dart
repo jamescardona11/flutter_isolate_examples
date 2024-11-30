@@ -46,7 +46,7 @@ class IsolateControllerForUpload<I, O> {
 
       final SendPort sendPort = await connection.future;
 
-      return IsolateControllerForUpload._(isolate, ReceivePort.fromRawReceivePort(initPort), sendPort);
+      return IsolateControllerForUpload<I, O>._(isolate, ReceivePort.fromRawReceivePort(initPort), sendPort);
     } catch (e) {
       initPort.close();
       print(e);

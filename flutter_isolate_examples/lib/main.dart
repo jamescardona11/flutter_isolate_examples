@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_isolate_examples/demo/image_processing/demo_image_processing_page.dart';
 import 'package:flutter_isolate_examples/learning_1/learning_1.dart';
+import 'package:flutter_isolate_examples/learning_2/cv_bidirectional_example.dart';
 import 'package:flutter_isolate_examples/learning_2/spawn_controller_example.dart';
 import 'package:flutter_isolate_examples/learning_2/spawn_controller_example_2.dart';
 
@@ -51,6 +52,11 @@ class HomePage extends StatelessWidget {
               TextButton(
                 onPressed: () => _navigateToExample1(context, const SpawnExample()),
                 child: const Text('Spawn'),
+              ),
+              const SizedBox(height: 20),
+              TextButton(
+                onPressed: () => _navigateToExample1(context, const CVBidirectionalExample()),
+                child: const Text('CV Spawn bi-directional'),
               ),
               const SizedBox(height: 20),
               TextButton(
